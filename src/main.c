@@ -12,14 +12,14 @@
 
 #include "../include/so_long.h"
 
-/*int	on_destroy(t_data *data)
+int	on_destroy(t_game *game)
 {
-	mlx_destroy_window(data->mlx_ptr, data->win_ptr);
-	mlx_destroy_display(data->mlx_ptr);
-	free(data->mlx_ptr);
+	mlx_destroy_window(game->mlx, game->win);
+	mlx_destroy_display(game->mlx);
+	free(game->mlx);
 	exit(0);
 	return (0);
-}*/
+}
 
 char	**read_map(const char *file, int *rows, int *cols)
 {
@@ -133,7 +133,6 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Error creating window\n");
 		return (EXIT_FAILURE);
 	}
-
 	game.wall_img = mlx_xpm_file_to_image(game.mlx, "assets/arbres.xpm", &(int){TILE_SIZE}, &(int){TILE_SIZE});
 	game.floor_img = mlx_xpm_file_to_image(game.mlx, "assets/terre.xpm", &(int){TILE_SIZE}, &(int){TILE_SIZE});
 	game.player_img = mlx_xpm_file_to_image(game.mlx, "assets/guts.xpm", &(int){TILE_SIZE}, &(int){TILE_SIZE});
@@ -145,7 +144,7 @@ int main(int argc, char **argv)
 		return (EXIT_FAILURE);
 	}
 	draw_map(&game);
+	mlx_hook(game.win, DestroyNotify, StructureNotifyMask, &on_destroy, &game);
 	mlx_loop(game.mlx);
-
 	return (0);
 }
