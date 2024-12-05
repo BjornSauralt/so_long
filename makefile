@@ -22,7 +22,10 @@ MLX_EX		=	$(MLX_LIB) $(MLX_FLAG)
 SRC_DIR = ./src/
 INC_DIR = ./include/
 
+# FICHIERS A AJOUTER ICI FDP
 SO_LONG_FILE =  main.c \
+				mouvement.c \
+				map.c \
 
 SRC = $(addprefix $(SRC_DIR),$(SO_LONG_FILE))
 
