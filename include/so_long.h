@@ -48,5 +48,8 @@ void	exit_game(t_game *game);
 int		on_keypress(int keycode, t_game *game);
 int		main(int argc, char **argv);
 int		on_destroy_bouton(t_game *game);
+void	validate_map(t_game *game);
+void	error_message(int player_count, int exit_count, int collectible_count);
+void	validate_walls_and_rectangle(t_game *game);
 
 #endif

@@ -19,7 +19,7 @@ char	**read_map(const char *file, t_game *game)
 	int		i;
 	int		y;
 	int		x;
-
+	
 	i = 0;
 	y = 0;
 	fp = fopen(file, "r");
@@ -72,6 +72,7 @@ void	init_game(t_game *game, const char *map_file)
 {
 	game->move_count = 0;
 	game->map = read_map(map_file, game);
+	validate_map(game);
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, game->cols * TILE_SIZE,
 			game->rows * TILE_SIZE, "so_long");
