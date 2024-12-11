@@ -13,6 +13,10 @@
 #ifndef LIBFT_H
 # define LIBFT_H
 
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1234
+# endif
+
 # include <stdio.h>
 # include <unistd.h>
 # include <string.h>
@@ -59,6 +63,11 @@ char	**ft_split(char const *s, char c);
 char	*ft_itoa(int n);
 void	ft_putnbr_fd(int n, int fd);
 
-//BONUS
+//GNL
+
+char	*read_first_line(int fd, char *text);
+char	*get(char *text);
+char	*clean_first_line(char *text);
+char	*get_next_line(int fd);
 
 #endif

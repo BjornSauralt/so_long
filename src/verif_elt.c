@@ -17,17 +17,17 @@ void	error_message(int player_count, int exit_count, int collectible_count)
 	if (player_count != 1)
 	{
 		fprintf(stderr, "Error\npas de joueurs.\n");
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if (exit_count < 1)
 	{
 		fprintf(stderr, "Error\npas de sortie.\n");
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 	if (collectible_count < 1)
 	{
 		fprintf(stderr, "Error\npas de collectible.\n");
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
 }
 

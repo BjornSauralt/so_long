@@ -14,57 +14,10 @@
 
 char	**read_map(const char *file, t_game *game)
 {
-	FILE	*fp;
-	char	buffer[1024];
-	int		i;
-	int		y;
-	int		x;
-
-	i = 0;
-	y = 0;
-	fp = fopen(file, "r");
-	if (!fp)
-	{
-		fprintf(stderr, "Error\nOuverture du fichier impossible %s\n", file);
-		exit(0);
-	}
-	game->rows = 0;
-	game->cols = 0;
-	while (fgets(buffer, sizeof(buffer), fp))
-	{
-		if (game->cols == 0)
-			game->cols = strlen(buffer) - 1;
-		game->rows++;
-	}
-	rewind(fp);
-	game->map = malloc(game->rows * sizeof(char *));
-	while (i < game->rows)
-	{
-		game->map[i] = malloc((game->cols + 1) * sizeof(char));
-		fgets(game->map[i], game->cols + 2, fp);
-		game->map[i][game->cols] = '\0';
-		i++;
-	}
-	fclose(fp);
-	game->collectibles = 0;
-	while (y < game->rows)
-	{
-		x = 0;
-		while (x < game->cols)
-		{
-			if (game->map[y][x] == 'P')
-			{
-				game->player_x = x;
-				game->player_y = y;
-			}
-			else if (game->map[y][x] == 'C')
-			{
-				game->collectibles++;
-			}
-			x++;
-		}
-		y++;
-	}
+	calculate_map_dimensions(file, game);
+	allocate_map_memory(game);
+	fill_map_from_file(file, game);
+	initialize_game_elements(game);
 	return (game->map);
 }
 

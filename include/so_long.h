@@ -59,5 +59,9 @@ void	update_player_position(t_game *game, int new_x, int new_y);
 void	validate_side_walls(t_game *game);
 void	validate_top_and_bottom_walls(t_game *game);
 void	validate_rectangle(t_game *game);
+void	calculate_map_dimensions(const char *file, t_game *game);
+void	allocate_map_memory(t_game *game);
+void	fill_map_from_file(const char *file, t_game *game);
+void	initialize_game_elements(t_game *game);
 
 #endif
