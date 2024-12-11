@@ -17,6 +17,11 @@ char	*ft_free(char *txt, char *buffer)
 	char	*temp;
 
 	temp = ft_strjoin(txt, buffer);
+	if (!temp)
+	{
+		free(txt);
+		return (NULL);
+	}
 	free(txt);
 	return (temp);
 }
@@ -87,7 +92,8 @@ char	*clean_first_line(char *txt)
 		free (txt);
 		return (NULL);
 	}
-	str = ft_calloc((ft_strlen(txt) - i + 1), sizeof(*txt));
+	str = ft_calloc(ft_strlen(txt) - i, sizeof(*txt));
+	//str = ft_calloc((ft_strlen(txt) - i + 1), sizeof(*txt));
 	if (!str)
 		return (NULL);
 	while (txt[++i])
@@ -109,6 +115,11 @@ char	*get_next_line(int fd)
 		return (NULL);
 	output = get_the_line(txt);
 	txt = clean_first_line(txt);
+	if (!txt)
+	{
+		free(txt);
+		txt = NULL;
+	}
 	return (output);
 }
 /*

@@ -28,11 +28,11 @@ void	calculate_map_dimensions(const char *file, t_game *game)
 	line = get_next_line(fd);
 	while ((line))
 	{
-		line = get_next_line(fd);
 		if (game->cols == 0)
 			game->cols = strlen(line) - (line[strlen(line) - 1] == '\n');
 		game->rows++;
 		free(line);
+		line = get_next_line(fd);
 	}
 	close(fd);
 }
