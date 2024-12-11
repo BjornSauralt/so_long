@@ -21,13 +21,14 @@ void	calculate_map_dimensions(const char *file, t_game *game)
 	if (fd < 0)
 	{
 		fprintf(stderr, "Error\nOuverture du fichier impossible %s\n", file);
-		exit(EXIT_FAILURE);
+		exit(0);
 	}
-
 	game->rows = 0;
 	game->cols = 0;
-	while ((line = get_next_line(fd)))
+	line = get_next_line(fd);
+	while ((line))
 	{
+		line = get_next_line(fd);
 		if (game->cols == 0)
 			game->cols = strlen(line) - (line[strlen(line) - 1] == '\n');
 		game->rows++;
@@ -41,34 +42,42 @@ void	allocate_map_memory(t_game *game)
 	game->map = malloc(game->rows * sizeof(char *));
 	if (!game->map)
 	{
-		fprintf(stderr, "Error\nÉchec allocation mémoire pour la carte.\n");
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "Error\nEchec allocation memoire pour la carte.\n");
+		exit(0);
 	}
+}
+
+void	fill_map_line(char *line, t_game *game, int row)
+{
+	game->map[row] = malloc((game->cols + 1) * sizeof(char));
+	if (!game->map[row])
+	{
+		fprintf(stderr, "Error\nEchec allocation memoire pour ligne.\n");
+		exit(0);
+	}
+	strncpy(game->map[row], line, game->cols);
+	game->map[row][game->cols] = '\0';
 }
 
 void	fill_map_from_file(const char *file, t_game *game)
 {
 	int		fd;
 	char	*line;
-	int		i = 0;
+	int		i;
 
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		fprintf(stderr, "Error\nRéouverture du fichier impossible %s\n", file);
-		exit(EXIT_FAILURE);
+		fprintf(stderr, "Error\nReouverture du fichier impossible %s\n", file);
+		exit(0);
 	}
-
-	while ((line = get_next_line(fd)) && i < game->rows)
+	i = 0;
+	while (i < game->rows)
 	{
-		game->map[i] = malloc((game->cols + 1) * sizeof(char));
-		if (!game->map[i])
-		{
-			fprintf(stderr, "Error\nÉchec allocation mémoire pour ligne.\n");
-			exit(EXIT_FAILURE);
-		}
-		strncpy(game->map[i], line, game->cols);
-		game->map[i][game->cols] = '\0';
+		line = get_next_line(fd);
+		if (!line)
+			break ;
+		fill_map_line(line, game, i);
 		free(line);
 		i++;
 	}
@@ -77,10 +86,15 @@ void	fill_map_from_file(const char *file, t_game *game)
 
 void	initialize_game_elements(t_game *game)
 {
+	int	y;
+	int	x;
+
+	y = 0;
 	game->collectibles = 0;
-	for (int y = 0; y < game->rows; y++)
+	while (y < game->rows)
 	{
-		for (int x = 0; x < game->cols; x++)
+		x = 0;
+		while (x < game->cols)
 		{
 			if (game->map[y][x] == 'P')
 			{
@@ -91,6 +105,8 @@ void	initialize_game_elements(t_game *game)
 			{
 				game->collectibles++;
 			}
+			x++;
 		}
+		y++;
 	}
 }

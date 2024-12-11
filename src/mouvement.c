@@ -42,7 +42,7 @@ void	handle_tile_interaction(t_game *game, int new_x, int new_y)
 		game->collectibles--;
 	if (game->map[new_y][new_x] == 'E' && game->collectibles == 0)
 	{
-		printf("Vous avez réussi en %d mouvements\n", game->move_count);
+		printf("Vous avez reussi en %d mouvements\n", game->move_count);
 		exit_game(game);
 	}
 }
@@ -53,7 +53,7 @@ void	update_player_position(t_game *game, int new_x, int new_y)
 	game->player_x = new_x;
 	game->player_y = new_y;
 	game->move_count++;
-	printf("Mouvement numéro : %d\n", game->move_count);
+	printf("Mouvement numero : %d\n", game->move_count);
 	game->map[new_y][new_x] = 'P';
 }
 

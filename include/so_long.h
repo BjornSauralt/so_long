@@ -63,5 +63,6 @@ void	calculate_map_dimensions(const char *file, t_game *game);
 void	allocate_map_memory(t_game *game);
 void	fill_map_from_file(const char *file, t_game *game);
 void	initialize_game_elements(t_game *game);
+void	fill_map_line(char *line, t_game *game, int row);
 
 #endif
