@@ -27,6 +27,36 @@ int	on_keypress(int keycode, t_game *game)
 	return (0);
 }
 
+int	is_valid_move(t_game *game, int new_x, int new_y)
+{
+	if (new_x < 0 || new_x >= game->cols || new_y < 0 || new_y >= game->rows)
+		return (0);
+	if (game->map[new_y][new_x] == '1')
+		return (0);
+	return (1);
+}
+
+void	handle_tile_interaction(t_game *game, int new_x, int new_y)
+{
+	if (game->map[new_y][new_x] == 'C')
+		game->collectibles--;
+	if (game->map[new_y][new_x] == 'E' && game->collectibles == 0)
+	{
+		printf("Vous avez réussi en %d mouvements\n", game->move_count);
+		exit_game(game);
+	}
+}
+
+void	update_player_position(t_game *game, int new_x, int new_y)
+{
+	game->map[game->player_y][game->player_x] = '0';
+	game->player_x = new_x;
+	game->player_y = new_y;
+	game->move_count++;
+	printf("Mouvement numéro : %d\n", game->move_count);
+	game->map[new_y][new_x] = 'P';
+}
+
 void	move_player(t_game *game, int dx, int dy)
 {
 	int	new_x;
@@ -34,27 +64,11 @@ void	move_player(t_game *game, int dx, int dy)
 
 	new_x = game->player_x + dx;
 	new_y = game->player_y + dy;
-	if (new_x < 0 || new_x >= game->cols || new_y < 0 || new_y >= game->rows)
+	if (!is_valid_move(game, new_x, new_y))
 		return ;
-	if (game->map[new_y][new_x] == '1')
+	handle_tile_interaction(game, new_x, new_y);
+	if (game->map[new_y][new_x] == 'E')
 		return ;
-	if (game->map[new_y][new_x] == 'C')
-		game->collectibles--;
-	if (game->map[new_y][new_x] == 'E' && game->collectibles == 0)
-	{
-		printf("Vous avez reussi en %d mouvements\n", game->move_count);
-		exit_game(game);
-	}
-	else if (game->map[new_y][new_x] == 'E')
-		return ;
-	game->map[game->player_y][game->player_x] = '0';
-	if (game->map[new_y][new_x] != '1')
-	{
-		game->player_x = new_x;
-		game->player_y = new_y;
-		game->move_count++;
-		printf("mouvement numero : %d\n", game->move_count);
-	}
-	game->map[new_y][new_x] = 'P';
+	update_player_position(game, new_x, new_y);
 	draw_map(game);
 }

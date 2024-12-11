@@ -51,5 +51,13 @@ int		on_destroy_bouton(t_game *game);
 void	validate_map(t_game *game);
 void	error_message(int player_count, int exit_count, int collectible_count);
 void	validate_walls_and_rectangle(t_game *game);
+void	count_map_elements(t_game *game,
+			int *player_count, int *exit_count, int *collectible_count);
+int		is_valid_move(t_game *game, int new_x, int new_y);
+void	handle_tile_interaction(t_game *game, int new_x, int new_y);
+void	update_player_position(t_game *game, int new_x, int new_y);
+void	validate_side_walls(t_game *game);
+void	validate_top_and_bottom_walls(t_game *game);
+void	validate_rectangle(t_game *game);
 
 #endif

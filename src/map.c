@@ -52,7 +52,7 @@ void	draw_map(t_game *game)
 	int		y;
 	int		x;
 	char	tile;
-	
+
 	y = 0;
 	while (y < game->rows)
 	{

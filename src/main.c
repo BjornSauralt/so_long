@@ -19,13 +19,13 @@ char	**read_map(const char *file, t_game *game)
 	int		i;
 	int		y;
 	int		x;
-	
+
 	i = 0;
 	y = 0;
 	fp = fopen(file, "r");
 	if (!fp)
 	{
-		fprintf(stderr, "Erreur : ouverture du fichier impossible %s\n", file);
+		fprintf(stderr, "Error\nOuverture du fichier impossible %s\n", file);
 		exit(0);
 	}
 	game->rows = 0;
@@ -89,7 +89,7 @@ void	init_game(t_game *game, const char *map_file)
 	if (!game->wall_img || !game->floor_img || !game->player_img
 		|| !game->collectible_img || !game->exit_img)
 	{
-		fprintf(stderr, "Erreur de chargement des images\n");
+		fprintf(stderr, "Error\nErreur de chargement des images\n");
 		exit_game(game);
 	}
 	draw_map(game);

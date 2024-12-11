@@ -26,7 +26,8 @@ INC_DIR = ./include/
 SO_LONG_FILE =  main.c \
 				mouvement.c \
 				map.c \
-				verifications.c \
+				verif_map.c \
+				verif_elt.c \
 
 SRC = $(addprefix $(SRC_DIR),$(SO_LONG_FILE))
 
