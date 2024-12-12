@@ -41,21 +41,11 @@ typedef struct s_game
 	int		move_count;
 }	t_game;
 
+//map
 void	draw_map(t_game *game);
 char	**read_map(const char *file, t_game *game);
-void	move_player(t_game *game, int dx, int dy);
-void	exit_game(t_game *game);
-int		on_keypress(int keycode, t_game *game);
 int		main(int argc, char **argv);
-int		on_destroy_bouton(t_game *game);
-void	validate_map(t_game *game);
-void	error_message(int player_count, int exit_count, int collectible_count);
-void	validate_walls_and_rectangle(t_game *game);
-void	count_map_elements(t_game *game,
-			int *player_count, int *exit_count, int *collectible_count);
-int		is_valid_move(t_game *game, int new_x, int new_y);
-void	handle_tile_interaction(t_game *game, int new_x, int new_y);
-void	update_player_position(t_game *game, int new_x, int new_y);
+void	exit_game(t_game *game);
 void	validate_side_walls(t_game *game);
 void	validate_top_and_bottom_walls(t_game *game);
 void	validate_rectangle(t_game *game);
@@ -64,5 +54,30 @@ void	allocate_map_memory(t_game *game);
 void	fill_map_from_file(const char *file, t_game *game);
 void	initialize_game_elements(t_game *game);
 void	fill_map_line(char *line, t_game *game, int row);
+
+//mouvements
+void	move_player(t_game *game, int dx, int dy);
+int		on_keypress(int keycode, t_game *game);
+int		on_destroy_bouton(t_game *game);
+
+//verification mouvements et elements de map
+void	validate_map(t_game *game);
+void	error_message(int player_count, int exit_count, int collectible_count);
+void	validate_walls_and_rectangle(t_game *game);
+void	count_map_elements(t_game *game,
+			int *player_count, int *exit_count, int *collectible_count);
+int		is_valid_move(t_game *game, int new_x, int new_y);
+void	handle_tile_interaction(t_game *game, int new_x, int new_y);
+void	update_player_position(t_game *game, int new_x, int new_y);
+
+
+//verification de la jouabilite
+char	**clone_map(t_game *game);
+void	free_clone(char **clone, int rows);
+void	flood_fill(char **map, int x, int y, int rows, int cols);
+void	check_reachability(t_game *game);
+void	validate_playable_map(t_game *game);
+void	check_unreachable_exit(char **map, char **map_clone, int rows, int cols);
+void	check_unreachable_collectibles(char **map, char **map_clone, int rows, int cols);
 
 #endif

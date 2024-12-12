@@ -19,7 +19,7 @@ void	validate_rectangle(t_game *game)
 	y = 0;
 	while (y < game->rows)
 	{
-		if ((int)strlen(game->map[y]) != game->cols)
+		if ((int)ft_strlen(game->map[y]) != game->cols)
 		{
 			fprintf(stderr, "Error\nMap non rectangulaire\n");
 			exit(0);

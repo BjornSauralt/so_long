@@ -16,7 +16,7 @@ void	error_message(int player_count, int exit_count, int collectible_count)
 {
 	if (player_count != 1)
 	{
-		fprintf(stderr, "Error\npas de joueurs.\n");
+		fprintf(stderr, "Error\nnombre de joueurs incorrect.\n");
 		exit(0);
 	}
 	if (exit_count < 1)
@@ -66,7 +66,24 @@ void	validate_map(t_game *game)
 	player_count = 0;
 	exit_count = 0;
 	collectible_count = 0;
-	validate_walls_and_rectangle(game);
+	//validate_walls_and_rectangle(game);
 	count_map_elements(game, &player_count, &exit_count, &collectible_count);
 	error_message(player_count, exit_count, collectible_count);
+}
+
+void	check_reachability(t_game *game)
+{
+	char	**map_clone;
+
+	map_clone = clone_map(game);
+	flood_fill(map_clone, game->player_x, game->player_y, game->rows, game->cols);
+	check_unreachable_collectibles(game->map, map_clone, game->rows, game->cols);
+	check_unreachable_exit(game->map, map_clone, game->rows, game->cols);
+	free_clone(map_clone, game->rows);
+}
+
+void	validate_playable_map(t_game *game)
+{
+	validate_map(game);
+	check_reachability(game);
 }

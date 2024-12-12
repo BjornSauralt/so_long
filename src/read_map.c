@@ -29,7 +29,7 @@ void	calculate_map_dimensions(const char *file, t_game *game)
 	while ((line))
 	{
 		if (game->cols == 0)
-			game->cols = strlen(line) - (line[strlen(line) - 1] == '\n');
+			game->cols = ft_strlen(line) - (line[ft_strlen(line) - 1] == '\n');
 		game->rows++;
 		free(line);
 		line = get_next_line(fd);
@@ -55,7 +55,7 @@ void	fill_map_line(char *line, t_game *game, int row)
 		fprintf(stderr, "Error\nEchec allocation memoire pour ligne.\n");
 		exit(0);
 	}
-	strncpy(game->map[row], line, game->cols);
+	ft_strlcpy(game->map[row], line, game->cols);
 	game->map[row][game->cols] = '\0';
 }
 
