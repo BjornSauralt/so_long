@@ -66,7 +66,7 @@ void	validate_map(t_game *game)
 	player_count = 0;
 	exit_count = 0;
 	collectible_count = 0;
-	//validate_walls_and_rectangle(game);
+	validate_walls_and_rectangle(game);
 	count_map_elements(game, &player_count, &exit_count, &collectible_count);
 	error_message(player_count, exit_count, collectible_count);
 }
