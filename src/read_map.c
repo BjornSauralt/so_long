@@ -55,7 +55,7 @@ void	fill_map_line(char *line, t_game *game, int row)
 		fprintf(stderr, "Error\nEchec allocation memoire pour ligne.\n");
 		exit(0);
 	}
-	ft_strlcpy(game->map[row], line, game->cols);
+	ft_strncpy(game->map[row], line, game->cols);
 	game->map[row][game->cols] = '\0';
 }
 

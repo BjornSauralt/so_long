@@ -48,6 +48,7 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size);
 char	*ft_strnstr(const char *big, const char *little, size_t size);
 void	*ft_calloc(size_t elt, size_t size);
 char	*ft_strdup(const char *src);
+char	*ft_strncpy(char *dest, const char *src, int n);
 
 //2EME PARTIE
 

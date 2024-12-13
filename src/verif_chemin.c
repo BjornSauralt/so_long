@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   verif_chemin.c                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mgarsaul <mgarsaul@student.42.fr>          #+#  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024-12-13 14:45:17 by mgarsaul          #+#    #+#             */
+/*   Updated: 2024-12-13 14:45:17 by mgarsaul         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../include/so_long.h"
 
 char	**clone_map(t_game *game)
 {
-	char **clone;
-	int i;
+	char	**clone;
+	int		i;
 
 	clone = malloc(game->rows * sizeof(char *));
 	if (!clone)
@@ -17,7 +29,7 @@ char	**clone_map(t_game *game)
 		clone[i] = ft_strdup(game->map[i]);
 		if (!clone[i])
 		{
-			fprintf(stderr, "Error\nMemory allocation failed for map clone row.\n");
+			fprintf(stderr, "Error\nallocation a echoue.\n");
 			while (--i >= 0)
 				free(clone[i]);
 			free(clone);
@@ -30,7 +42,7 @@ char	**clone_map(t_game *game)
 
 void	free_clone(char **clone, int rows)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	while (i < rows)
@@ -43,7 +55,8 @@ void	free_clone(char **clone, int rows)
 
 void	flood_fill(char **map, int x, int y, int rows, int cols)
 {
-	if (x < 0 || x >= cols || y < 0 || y >= rows || map[y][x] == '1' || map[y][x] == 'V')
+	if (x < 0 || x >= cols || y < 0 || y >= rows
+		|| map[y][x] == '1' || map[y][x] == 'V')
 		return ;
 	map[y][x] = 'V';
 	flood_fill(map, x + 1, y, rows, cols);
@@ -52,10 +65,11 @@ void	flood_fill(char **map, int x, int y, int rows, int cols)
 	flood_fill(map, x, y - 1, rows, cols);
 }
 
-void	check_unreachable_collectibles(char **map, char **map_clone, int rows, int cols)
+void	check_unreachable_collectibles(char **map,
+	char **map_clone, int rows, int cols)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < rows)
@@ -65,7 +79,7 @@ void	check_unreachable_collectibles(char **map, char **map_clone, int rows, int 
 		{
 			if (map[y][x] == 'C' && map_clone[y][x] != 'V')
 			{
-				fprintf(stderr, "Error\nCollectible non atteignable(%d, %d).\n", x, y);
+				fprintf(stderr, "Error\nCollectible non atteignable.\n");
 				free_clone(map_clone, rows);
 				exit(0);
 			}
@@ -77,8 +91,8 @@ void	check_unreachable_collectibles(char **map, char **map_clone, int rows, int 
 
 void	check_unreachable_exit(char **map, char **map_clone, int rows, int cols)
 {
-	int y;
-	int x;
+	int	y;
+	int	x;
 
 	y = 0;
 	while (y < rows)

@@ -35,9 +35,13 @@ int	main(void)
 {
 	char	src[] = "Hello, World!";
 	char	dest[20];
-	size_t	result;
+	int		result;
 
 	result = ft_strlcpy(dest, src, sizeof(dest));
+	printf("Dest: %s\n", dest);
+	printf("%zu\n", result);
+
+	result = strncpy(dest, src, sizeof(dest));
 	printf("Dest: %s\n", dest);
 	printf("%zu\n", result);
 	return (0);
