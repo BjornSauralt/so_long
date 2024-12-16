@@ -12,21 +12,25 @@
 
 #include "../include/so_long.h"
 
-void	error_message(int player_count, int exit_count, int collectible_count)
+void	error_message(t_game *game, int player_count,
+			int exit_count, int collectible_count)
 {
 	if (player_count != 1)
 	{
 		fprintf(stderr, "Error\nnombre de joueurs incorrect.\n");
+		exit_map(game);
 		exit(0);
 	}
 	if (exit_count < 1)
 	{
 		fprintf(stderr, "Error\npas de sortie.\n");
+		exit_map(game);
 		exit(0);
 	}
 	if (collectible_count < 1)
 	{
 		fprintf(stderr, "Error\npas de collectible.\n");
+		exit_map(game);
 		exit(0);
 	}
 }
@@ -67,20 +71,19 @@ void	validate_map(t_game *game)
 	exit_count = 0;
 	collectible_count = 0;
 	count_map_elements(game, &player_count, &exit_count, &collectible_count);
-	error_message(player_count, exit_count, collectible_count);
+	error_message(game, player_count, exit_count, collectible_count);
 }
 
 void	check_reachability(t_game *game)
 {
-	char	**map_clone;
-
-	map_clone = clone_map(game);
-	flood_fill(map_clone, game->player_x,
-		game->player_y, game->rows, game->cols);
-	check_unreachable_collectibles(game->map,
-		map_clone, game->rows, game->cols);
-	check_unreachable_exit(game->map, map_clone, game->rows, game->cols);
-	free_clone(map_clone, game->rows);
+	game->clone = clone_map(game);
+	flood_fill(game, game->player_x,
+		game->player_y);
+	check_unreachable_collectibles(game, game->map,
+		game->rows, game->cols);
+	check_unreachable_exit(game, game->map,
+		game->rows, game->cols);
+	free_clone(game, game->rows);
 }
 
 void	validate_playable_map(t_game *game)

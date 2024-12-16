@@ -39,6 +39,7 @@ typedef struct s_game
 	void	*collectible_img;
 	void	*exit_img;
 	int		move_count;
+	char	**clone;		
 }	t_game;
 
 //map
@@ -46,6 +47,7 @@ void	draw_map(t_game *game);
 char	**read_map(const char *file, t_game *game);
 int		main(int argc, char **argv);
 void	exit_game(t_game *game);
+void	exit_map(t_game *game);
 void	validate_side_walls(t_game *game);
 void	validate_top_and_bottom_walls(t_game *game);
 void	validate_rectangle(t_game *game);
@@ -62,7 +64,8 @@ int		on_destroy_bouton(t_game *game);
 
 //verification mouvements et elements de map
 void	validate_map(t_game *game);
-void	error_message(int player_count, int exit_count, int collectible_count);
+void	error_message(t_game *game, int player_count,
+			int exit_count, int collectible_count);
 void	validate_walls_and_rectangle(t_game *game);
 void	count_map_elements(t_game *game,
 			int *player_count, int *exit_count, int *collectible_count);
@@ -73,11 +76,13 @@ void	update_player_position(t_game *game, int new_x, int new_y);
 
 //verification de la jouabilite
 char	**clone_map(t_game *game);
-void	free_clone(char **clone, int rows);
-void	flood_fill(char **map, int x, int y, int rows, int cols);
+void	free_clone(t_game *game, int rows);
+void	flood_fill(t_game *game, int x, int y);
 void	check_reachability(t_game *game);
 void	validate_playable_map(t_game *game);
-void	check_unreachable_exit(char **map, char **map_clone, int rows, int cols);
-void	check_unreachable_collectibles(char **map, char **map_clone, int rows, int cols);
+void	check_unreachable_collectibles(t_game *game,
+			char **map, int rows, int cols);
+void	check_unreachable_exit(t_game *game, char **map,
+			int rows, int cols);
 
 #endif

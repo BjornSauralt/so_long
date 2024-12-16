@@ -15,14 +15,17 @@
 void	validate_rectangle(t_game *game)
 {
 	int	y;
+	int	i;
 
+	i = 0;
 	y = 0;
 	while (y < game->rows)
 	{
 		if ((int)ft_strlen(game->map[y]) != game->cols)
 		{
 			fprintf(stderr, "Error\nMap non rectangulaire\n");
-			exit(EXIT_FAILURE);
+			exit_map(game);
+			exit(0);
 		}
 		y++;
 	}
@@ -38,7 +41,8 @@ void	validate_top_and_bottom_walls(t_game *game)
 		if (game->map[0][x] != '1' || game->map[game->rows - 1][x] != '1')
 		{
 			fprintf(stderr, "Error\nMurs non completes\n");
-			exit(EXIT_FAILURE);
+			exit_map(game);
+			exit(0);
 		}
 		x++;
 	}
@@ -54,7 +58,8 @@ void	validate_side_walls(t_game *game)
 		if (game->map[y][0] != '1' || game->map[y][game->cols - 1] != '1')
 		{
 			fprintf(stderr, "Error\nMurs non completes\n");
-			exit(EXIT_FAILURE);
+			exit_map(game);
+			exit(0);
 		}
 		y++;
 	}

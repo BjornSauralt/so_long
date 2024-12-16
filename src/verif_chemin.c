@@ -14,11 +14,10 @@
 
 char	**clone_map(t_game *game)
 {
-	char	**clone;
 	int		i;
 
-	clone = malloc(game->rows * sizeof(char *));
-	if (!clone)
+	game->clone = malloc(game->rows * sizeof(char *));
+	if (!game->clone)
 	{
 		fprintf(stderr, "Error\nMemory allocation failed for map clone.\n");
 		exit(0);
@@ -26,47 +25,47 @@ char	**clone_map(t_game *game)
 	i = 0;
 	while (i < game->rows)
 	{
-		clone[i] = ft_strdup(game->map[i]);
-		if (!clone[i])
+		game->clone[i] = ft_strdup(game->map[i]);
+		if (!game->clone[i])
 		{
 			fprintf(stderr, "Error\nallocation a echoue.\n");
 			while (--i >= 0)
-				free(clone[i]);
-			free(clone);
+				free(game->clone[i]);
+			free(game->clone);
 			exit(0);
 		}
 		i++;
 	}
-	return (clone);
+	return (game->clone);
 }
 
-void	free_clone(char **clone, int rows)
+void	free_clone(t_game *game, int rows)
 {
 	int	i;
 
 	i = 0;
 	while (i < rows)
 	{
-		free(clone[i]);
+		free(game->clone[i]);
 		i++;
 	}
-	free(clone);
+	free(game->clone);
 }
 
-void	flood_fill(char **map, int x, int y, int rows, int cols)
+void	flood_fill(t_game *game, int x, int y)
 {
-	if (x < 0 || x >= cols || y < 0 || y >= rows
-		|| map[y][x] == '1' || map[y][x] == 'V')
+	if (x < 0 || x >= game->cols || y < 0 || y >= game->rows
+		|| game->clone[y][x] == '1' || game->clone[y][x] == 'V')
 		return ;
-	map[y][x] = 'V';
-	flood_fill(map, x + 1, y, rows, cols);
-	flood_fill(map, x - 1, y, rows, cols);
-	flood_fill(map, x, y + 1, rows, cols);
-	flood_fill(map, x, y - 1, rows, cols);
+	game->clone[y][x] = 'V';
+	flood_fill(game, x + 1, y);
+	flood_fill(game, x - 1, y);
+	flood_fill(game, x, y + 1);
+	flood_fill(game, x, y - 1);
 }
 
-void	check_unreachable_collectibles(char **map,
-	char **map_clone, int rows, int cols)
+void	check_unreachable_collectibles(t_game *game,
+			char **map, int rows, int cols)
 {
 	int	y;
 	int	x;
@@ -77,10 +76,11 @@ void	check_unreachable_collectibles(char **map,
 		x = 0;
 		while (x < cols)
 		{
-			if (map[y][x] == 'C' && map_clone[y][x] != 'V')
+			if (map[y][x] == 'C' && game->clone[y][x] != 'V')
 			{
 				fprintf(stderr, "Error\nCollectible non atteignable.\n");
-				free_clone(map_clone, rows);
+				free_clone(game, rows);
+				exit_map(game);
 				exit(0);
 			}
 			x++;
@@ -89,7 +89,8 @@ void	check_unreachable_collectibles(char **map,
 	}
 }
 
-void	check_unreachable_exit(char **map, char **map_clone, int rows, int cols)
+void	check_unreachable_exit(t_game *game, char **map,
+		int rows, int cols)
 {
 	int	y;
 	int	x;
@@ -100,11 +101,12 @@ void	check_unreachable_exit(char **map, char **map_clone, int rows, int cols)
 		x = 0;
 		while (x < cols)
 		{
-			if (map[y][x] == 'E' && map_clone[y][x] != 'V')
+			if (map[y][x] == 'E' && game->clone[y][x] != 'V')
 			{
 				fprintf(stderr, "Error\nSortie non atteignable.\n");
-				free_clone(map_clone, rows);
-				exit(0);
+				free_clone(game, rows);
+				exit_map(game);
+				exit(EXIT_FAILURE);
 			}
 			x++;
 		}

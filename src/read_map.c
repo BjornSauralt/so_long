@@ -39,21 +39,34 @@ void	calculate_map_dimensions(const char *file, t_game *game)
 
 void	allocate_map_memory(t_game *game)
 {
+	int	i;
+
+	i = 0;
 	game->map = malloc(game->rows * sizeof(char *));
 	if (!game->map)
 	{
-		fprintf(stderr, "Error\nEchec allocation memoire pour la carte.\n");
-		exit(0);
+		fprintf(stderr, "Error\nÉchec d'allocation mémoire pour la carte.\n");
+		exit_game(game);
+	}
+	while (i < game->rows)
+	{
+		game->map[i] = NULL;
+		i++;
 	}
 }
 
 void	fill_map_line(char *line, t_game *game, int row)
 {
+	if (!line)
+	{
+		fprintf(stderr, "Error\nLigne invalide.\n");
+		exit_game(game);
+	}
 	game->map[row] = malloc((game->cols + 1) * sizeof(char));
 	if (!game->map[row])
 	{
-		fprintf(stderr, "Error\nEchec allocation memoire pour ligne.\n");
-		exit(0);
+		fprintf(stderr, "Error\nÉchec d'allocation mémoire pour une ligne.\n");
+		exit_game(game);
 	}
 	ft_strncpy(game->map[row], line, game->cols);
 	game->map[row][game->cols] = '\0';
@@ -68,7 +81,7 @@ void	fill_map_from_file(const char *file, t_game *game)
 	fd = open(file, O_RDONLY);
 	if (fd < 0)
 	{
-		fprintf(stderr, "Error\nReouverture du fichier impossible %s\n", file);
+		fprintf(stderr, "Error\nImpossible d'ouvrir le fichier %s.\n", file);
 		exit(0);
 	}
 	i = 0;
@@ -76,7 +89,10 @@ void	fill_map_from_file(const char *file, t_game *game)
 	{
 		line = get_next_line(fd);
 		if (!line)
-			break ;
+		{
+			fprintf(stderr, "Error\nProblème lecture de la carte.\n");
+			exit_game(game);
+		}
 		fill_map_line(line, game, i);
 		free(line);
 		i++;
