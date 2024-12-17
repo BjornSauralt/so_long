@@ -30,6 +30,7 @@ SO_LONG_FILE =  main.c \
 				verif_elt.c \
 				read_map.c \
 				verif_chemin.c \
+				exit.c \
 
 SRC = $(addprefix $(SRC_DIR),$(SO_LONG_FILE))
 

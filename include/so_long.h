@@ -46,8 +46,6 @@ typedef struct s_game
 void	draw_map(t_game *game);
 char	**read_map(const char *file, t_game *game);
 int		main(int argc, char **argv);
-void	exit_game(t_game *game);
-void	exit_map(t_game *game);
 void	validate_side_walls(t_game *game);
 void	validate_top_and_bottom_walls(t_game *game);
 void	validate_rectangle(t_game *game);
@@ -60,7 +58,6 @@ void	fill_map_line(char *line, t_game *game, int row);
 //mouvements
 void	move_player(t_game *game, int dx, int dy);
 int		on_keypress(int keycode, t_game *game);
-int		on_destroy_bouton(t_game *game);
 
 //verification mouvements et elements de map
 void	validate_map(t_game *game);
@@ -73,7 +70,6 @@ int		is_valid_move(t_game *game, int new_x, int new_y);
 void	handle_tile_interaction(t_game *game, int new_x, int new_y);
 void	update_player_position(t_game *game, int new_x, int new_y);
 
-
 //verification de la jouabilite
 char	**clone_map(t_game *game);
 void	free_clone(t_game *game, int rows);
@@ -84,5 +80,12 @@ void	check_unreachable_collectibles(t_game *game,
 			char **map, int rows, int cols);
 void	check_unreachable_exit(t_game *game, char **map,
 			int rows, int cols);
+
+//quitter
+void	exit_game(t_game *game);
+void	exit_map(t_game *game);
+int		on_destroy_bouton(t_game *game);
+void	destroy_images(t_game *game);
+void	destroy_window_and_mlx(t_game *game);
 
 #endif

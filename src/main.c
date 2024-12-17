@@ -25,11 +25,6 @@ void	init_game(t_game *game, const char *map_file)
 {
 	game->move_count = 0;
 	game->map = read_map(map_file, game);
-	// while (game->cols)
-	// {
-	// 	while (game->rows)
-	// 		printf("%s\n", game->map[game->rows]);
-	// }
 	validate_playable_map(game);
 	game->mlx = mlx_init();
 	game->win = mlx_new_window(game->mlx, game->cols * TILE_SIZE,

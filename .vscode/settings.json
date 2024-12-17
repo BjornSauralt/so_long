@@ -1,7 +1,8 @@
 {
   "files.associations": {
     "stdlib.h": "c",
-    "so_long.h": "c"
+    "so_long.h": "c",
+    "locale": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "gcc",
   "C_Cpp_Runner.cppCompilerPath": "g++",

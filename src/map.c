@@ -18,51 +18,6 @@ void	draw_tile(t_game *game, int x, int y, void *img)
 		* TILE_SIZE, y * TILE_SIZE);
 }
 
-void	exit_game(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	printf("Libération de la carte...\n");
-	if (game->map)
-	{
-		while (i < game->rows)
-		{
-			if (game->map[i])
-			{
-				free(game->map[i]);
-				game->map[i] = NULL;
-			}
-			i++;
-		}
-		free(game->map);
-		game->map = NULL;
-		printf("Carte libérée.\n");
-	}
-	if (game->wall_img)
-		mlx_destroy_image(game->mlx, game->wall_img);
-	if (game->floor_img)
-		mlx_destroy_image(game->mlx, game->floor_img);
-	if (game->player_img)
-		mlx_destroy_image(game->mlx, game->player_img);
-	if (game->collectible_img)
-		mlx_destroy_image(game->mlx, game->collectible_img);
-	if (game->exit_img)
-		mlx_destroy_image(game->mlx, game->exit_img);
-	if (game->win)
-		mlx_destroy_window(game->mlx, game->win);
-	if (game->mlx)
-	{
-		mlx_destroy_display(game->mlx);
-		free(game->mlx);
-		game->mlx = NULL;
-		printf("MiniLibX libérée.\n");
-	}
-	printf("Toutes les ressources libérées.\n");
-	exit(0);
-}
-
-
 void	draw_map(t_game *game)
 {
 	int		y;
@@ -88,27 +43,5 @@ void	draw_map(t_game *game)
 			x++;
 		}
 		y++;
-	}
-}
-
-void	exit_map(t_game *game)
-{
-	int	i;
-
-	i = 0;
-	if (game->map)
-	{
-		while (i < game->rows)
-		{
-			if (game->map[i])
-			{
-				free(game->map[i]);
-				game->map[i] = NULL;
-			}
-			i++;
-		}
-		free(game->map);
-		game->map = NULL;
-		printf("Carte libérée.\n");
 	}
 }

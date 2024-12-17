@@ -25,6 +25,5 @@ char	*ft_strncpy(char *dest, const char *src, int n)
 		dest[val] = '\0';
 		val++;
 	}
-
 	return (dest);
 }
