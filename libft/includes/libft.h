@@ -23,6 +23,12 @@
 # include <stdlib.h>
 # include <fcntl.h>
 
+typedef struct s_list
+{
+	void			*content;
+	struct s_list	*next;
+}				t_list;
+
 //1ERE PARTIE
 
 int		ft_isprint(int car);
@@ -66,9 +72,12 @@ void	ft_putnbr_fd(int n, int fd);
 
 //GNL
 
-char	*read_first_line(int fd, char *text);
-char	*get(char *text);
-char	*clean_first_line(char *text);
 char	*get_next_line(int fd);
+
+//LST
+
+t_list	*ft_lstnew(void *content);
+void	ft_lstadd_back(t_list **lst, t_list *new);
+void	ft_lstclear(t_list **lst, void (*del)(void *));
 
 #endif

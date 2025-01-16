@@ -12,109 +12,108 @@
 
 #include "../includes/libft.h"
 
-char	*ft_free(char *txt, char *buffer)
+static int	create_stash(t_list **stash, char *buffer)
 {
-	char	*temp;
+	int		i;
+	t_list	*n;
+	char	*p;
 
-	temp = ft_strjoin(txt, buffer);
-	if (!temp)
+	i = 0;
+	while (buffer[i])
 	{
-		free(txt);
-		return (NULL);
+		p = malloc(1);
+		if (p == NULL)
+			return (-1);
+		*p = buffer[i];
+		n = ft_lstnew(p);
+		if (n == NULL)
+			free(p);
+		if (n == NULL)
+			return (-1);
+		ft_lstadd_back(stash, n);
+		i++;
 	}
-	free(txt);
-	return (temp);
+	return (0);
 }
 
-char	*read_first_line(int fd, char *txt)
+static void	create(int fd, t_list **stash)
 {
+	int		j;
 	char	*buffer;
-	int		bytes_read;
 
-	if (!txt)
-		txt = ft_calloc(1, 1);
-	buffer = malloc((BUFFER_SIZE + 1) * sizeof(char));
-	if (!buffer)
-		return (NULL);
-	bytes_read = 1;
-	while (bytes_read > 0)
+	buffer = malloc(BUFFER_SIZE + 1);
+	if (buffer == NULL)
+		return ;
+	while (1)
 	{
-		bytes_read = read(fd, buffer, BUFFER_SIZE);
-		if (bytes_read == -1)
+		j = read(fd, buffer, BUFFER_SIZE);
+		if (j <= 0)
+			break ;
+		buffer[j] = '\0';
+		if (create_stash(stash, buffer) == -1)
 		{
-			free (txt);
-			free (buffer);
-			return (NULL);
+			ft_lstclear(stash, free);
+			break ;
 		}
-		buffer[bytes_read] = 0;
-		txt = ft_free(txt, buffer);
-		if (ft_strchr(txt, '\n'))
+		if (ft_strchr(buffer, '\n'))
 			break ;
 	}
 	free (buffer);
-	return (txt);
 }
 
-char	*get_the_line(char *txt)
+static char	*create_line(int i, t_list **stash, int len)
 {
-	int		i;
-	char	*str;
+	t_list	*temp;
+	char	*line;
 
-	i = 0;
-	if (!txt[i])
-		return (NULL);
-	while (txt[i] && txt[i] != '\n')
-		i++;
-	str = ft_calloc(i + 2, sizeof(char));
-	i = 0;
-	while (txt[i] && txt[i] != '\n')
+	temp = *stash;
+	while (temp && *(char *)temp->content != '\n')
 	{
-		str[i] = txt[i];
-		i++;
+		len++;
+		temp = temp->next;
 	}
-	if (txt[i] && txt[i] == '\n')
-		str[i++] = '\n';
-	return (str);
-}
-
-char	*clean_first_line(char *txt)
-{
-	int		i;
-	int		j;
-	char	*str;
-
-	i = 0;
-	j = 0;
-	while (txt[i] && txt[i] != '\n')
-		i++;
-	if (!txt[i])
+	if (temp && *(char *)temp->content == '\n')
+		len++;
+	line = malloc(len + 1);
+	if (line == NULL)
+		return (NULL);
+	temp = *stash;
+	while (temp && i < len)
 	{
-		free (txt);
-		return (NULL);
+		line[i++] = *(char *)temp->content;
+		*stash = (*stash)->next;
+		free(temp->content);
+		free(temp);
+		temp = *stash;
 	}
-	str = ft_calloc((ft_strlen(txt) - i + 1), sizeof(*txt));
-	if (!str)
-		return (NULL);
-	while (txt[++i])
-		str[j++] = txt[i];
-	str[j] = '\0';
-	free (txt);
-	return (str);
+	line[i] = '\0';
+	return (line);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*output;
-	static char	*txt;
+	static t_list	*stash;
+	char			*line;
+	int				i;
+	int				len;
 
 	if (fd < 0 || BUFFER_SIZE <= 0)
+	{
+		ft_lstclear(&stash, free);
 		return (NULL);
-	txt = read_first_line(fd, txt);
-	if (!txt)
+	}
+	i = 0;
+	len = 0;
+	create(fd, &stash);
+	if (!stash)
 		return (NULL);
-	output = get_the_line(txt);
-	txt = clean_first_line(txt);
-	return (output);
+	line = create_line(i, &stash, len);
+	if (line == NULL || stash == NULL)
+	{
+		ft_lstclear(&stash, free);
+		stash = NULL;
+	}
+	return (line);
 }
 /*
 int	main(void)
